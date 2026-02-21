@@ -1,0 +1,2180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miles' Rant Jar 🫙</title>
+<meta name="application-name" content="Miles' Rant Jar">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Rant Jar">
+<meta name="theme-color" content="#a85e20">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" id="pwa-manifest">
+<link rel="apple-touch-icon" id="apple-icon">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fdf6ec;
+    --warm-white: #fef9f3;
+    --amber: #d4813a;
+    --amber-light: #e8a55f;
+    --amber-dark: #a85e20;
+    --brown: #6b3a1f;
+    --brown-light: #9b6040;
+    --text: #3d2008;
+    --text-light: #7a5035;
+    --shadow: rgba(100,50,10,0.15);
+    --rose: #e8827a;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  /* ══ PAGES ══ */
+  .page { display:none; min-height:100vh; }
+  .page.active { display:flex; flex-direction:column; align-items:center; }
+
+  /* ══ PAGE 1 — RANT JAR (warm amber) ══ */
+  #page-jar {
+    background-color: var(--cream);
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(212,129,58,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(232,130,122,0.08) 0%, transparent 50%);
+    font-family:'Lora',serif;
+    color:var(--text);
+    padding:40px 20px 80px;
+  }
+
+  /* nav arrows */
+  .nav-arrow {
+    position:fixed; bottom:28px;
+    background:rgba(255,255,255,0.85);
+    border:2px solid rgba(212,129,58,0.3);
+    border-radius:50px;
+    padding:10px 22px;
+    font-family:'Caveat',cursive;
+    font-size:1.1rem;
+    cursor:pointer;
+    color:var(--brown);
+    transition:all 0.25s;
+    box-shadow:0 4px 14px rgba(100,50,10,0.12);
+    z-index:50;
+    backdrop-filter:blur(6px);
+  }
+  .nav-arrow:hover { transform:translateY(-2px); border-color:var(--amber); color:var(--amber-dark); }
+  .nav-arrow.right { right:24px; }
+  .nav-arrow.left  { left:24px; }
+  #page-sad .nav-arrow { background:rgba(30,50,80,0.7); border-color:rgba(120,170,230,0.3); color:#b8d4f0; }
+  #page-sad .nav-arrow:hover { border-color:#7ab0e0; color:#ddeeff; }
+  #page-reminder .nav-arrow { background:rgba(80,40,10,0.65); border-color:rgba(212,160,80,0.35); color:#f0d090; backdrop-filter:blur(8px); }
+  #page-reminder .nav-arrow:hover { border-color:#d4813a; color:#ffe8b0; }
+
+  /* LOVE NOTE */
+  .love-note {
+    width:100%; max-width:520px;
+    background:linear-gradient(135deg,#fff0e8,#fde8e6);
+    border:2px dashed rgba(232,130,122,0.45);
+    border-radius:20px; padding:24px 28px; margin-bottom:36px;
+    position:relative; animation:fadeDown 0.8s ease both;
+    box-shadow:0 4px 20px rgba(232,130,122,0.1);
+  }
+  .love-note::before { content:'💌'; position:absolute; top:-16px; left:50%; transform:translateX(-50%); font-size:1.8rem; background:var(--cream); padding:0 8px; }
+  .love-note p { font-family:'Caveat',cursive; font-size:1.2rem; color:#a04050; line-height:1.8; text-align:center; }
+  .love-note .sign { display:block; margin-top:8px; font-size:1.05rem; color:var(--rose); font-style:italic; }
+
+  .love-note { cursor: pointer; user-select: none; -webkit-user-select: none; }
+  .love-preview {
+    font-family: 'Caveat', cursive;
+    font-size: 1.15rem;
+    color: #a04050;
+    line-height: 1.6;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .love-tap-hint {
+    font-size: 0.82rem;
+    color: var(--rose);
+    opacity: 0.7;
+    font-style: italic;
+    font-family: 'Caveat', cursive;
+    display: block;
+  }
+  .love-full {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+    opacity: 0;
+  }
+  .love-full.open {
+    max-height: 600px;
+    opacity: 1;
+  }
+  .love-full p {
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    color: #a04050;
+    line-height: 1.8;
+    text-align: center;
+    margin-top: 12px;
+  }
+  .love-note.open .love-tap-hint:first-of-type { display: none; }
+
+  .love-note { cursor: pointer; user-select: none; -webkit-user-select: none; }
+  .love-preview {
+    font-family: 'Caveat', cursive;
+    font-size: 1.15rem;
+    color: #a04050;
+    line-height: 1.6;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .love-tap-hint {
+    font-size: 0.82rem;
+    color: var(--rose);
+    opacity: 0.7;
+    font-style: italic;
+    font-family: 'Caveat', cursive;
+    display: block;
+  }
+  .love-full {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease;
+    opacity: 0;
+  }
+  .love-full.open { max-height: 600px; opacity: 1; }
+  .love-full p {
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    color: #a04050;
+    line-height: 1.8;
+    text-align: center;
+    margin-top: 12px;
+  }
+  .love-note { cursor: pointer; user-select: none; -webkit-user-select: none; }
+  .love-preview {
+    font-family: 'Caveat', cursive;
+    font-size: 1.15rem;
+    color: #a04050;
+    line-height: 1.6;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .love-tap-hint {
+    font-size: 0.82rem;
+    color: var(--rose);
+    opacity: 0.7;
+    font-style: italic;
+    font-family: 'Caveat', cursive;
+    display: block;
+  }
+  .love-full {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease;
+    opacity: 0;
+  }
+  .love-full.open { max-height: 600px; opacity: 1; }
+  .love-full p {
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    color: #a04050;
+    line-height: 1.8;
+    text-align: center;
+    margin-top: 12px;
+  }
+  header { text-align:center; margin-bottom:40px; animation:fadeDown 0.8s 0.1s ease both; opacity:0; animation-fill-mode:forwards; }
+  header h1 { font-family:'Caveat',cursive; font-size:clamp(2.8rem,8vw,4.2rem); font-weight:700; color:var(--amber-dark); line-height:1.1; }
+  header p { margin-top:8px; font-size:1rem; font-style:italic; color:var(--text-light); }
+
+  .jar-section { width:100%; max-width:520px; animation:fadeUp 0.8s 0.2s ease both; opacity:0; animation-fill-mode:forwards; }
+  .rant-box { background:var(--warm-white); border:2px solid rgba(212,129,58,0.3); border-radius:20px; padding:28px; box-shadow:0 4px 24px var(--shadow),inset 0 1px 0 rgba(255,255,255,0.8); position:relative; overflow:hidden; }
+  .rant-box::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,220,160,0.15) 0%,transparent 60%); pointer-events:none; }
+  .rant-box label { display:block; font-family:'Caveat',cursive; font-size:1.35rem; color:var(--amber-dark); margin-bottom:12px; }
+  textarea { width:100%; min-height:160px; background:rgba(255,240,210,0.4); border:1.5px solid rgba(212,129,58,0.25); border-radius:12px; padding:16px; font-family:'Lora',serif; font-size:1rem; color:var(--text); line-height:1.7; resize:vertical; outline:none; transition:border-color 0.25s,box-shadow 0.25s; }
+  textarea::placeholder { color:rgba(100,60,20,0.35); font-style:italic; }
+  textarea:focus { border-color:var(--amber); box-shadow:0 0 0 3px rgba(212,129,58,0.12); }
+  .mood-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; align-items:center; }
+  .mood-row span { font-family:'Caveat',cursive; font-size:0.9rem; color:var(--text-light); }
+  .mood-btn { background:rgba(255,230,180,0.5); border:1.5px solid rgba(212,129,58,0.2); border-radius:20px; padding:5px 13px; font-size:0.83rem; cursor:pointer; transition:all 0.2s; color:var(--brown-light); font-family:'Lora',serif; }
+  .mood-btn:hover,.mood-btn.active { background:var(--amber); border-color:var(--amber); color:white; transform:scale(1.05); }
+  .submit-btn { margin-top:18px; width:100%; padding:14px; background:linear-gradient(135deg,var(--amber),var(--amber-dark)); color:white; border:none; border-radius:14px; font-family:'Caveat',cursive; font-size:1.3rem; cursor:pointer; transition:all 0.25s; box-shadow:0 4px 14px rgba(168,94,32,0.3); }
+  .submit-btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(168,94,32,0.4); }
+
+  .jar-container { margin-top:52px; display:flex; flex-direction:column; align-items:center; animation:fadeUp 0.8s 0.4s ease both; opacity:0; animation-fill-mode:forwards; }
+  .jar-label-text { font-family:'Caveat',cursive; font-size:1.5rem; color:var(--amber-dark); margin-bottom:16px; }
+  .jar-wrap { position:relative; width:200px; }
+  .jar-svg { width:200px; filter:drop-shadow(0 8px 20px rgba(100,50,10,0.2)); }
+  .rant-notes { position:absolute; bottom:30px; left:50%; transform:translateX(-50%); width:120px; display:flex; flex-wrap:wrap; justify-content:center; gap:4px; pointer-events:none; }
+  .note-scrap { width:28px; height:22px; border-radius:3px; opacity:0.85; animation:noteWiggle 0.5s ease both; transform-origin:center bottom; }
+  @keyframes noteWiggle { from{transform:scale(0) rotate(-15deg);opacity:0;} to{transform:scale(1) rotate(var(--r));opacity:0.85;} }
+  .rant-count { margin-top:12px; font-family:'Caveat',cursive; font-size:1.1rem; color:var(--text-light); font-style:italic; }
+
+  .pickmeup-section { width:100%; max-width:520px; margin-top:52px; animation:fadeUp 0.8s 0.5s ease both; opacity:0; animation-fill-mode:forwards; }
+  .pickmeup-section h2 { font-family:'Caveat',cursive; font-size:1.8rem; color:var(--amber-dark); margin-bottom:18px; text-align:center; }
+  .pickmeup-btns { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+  .pmu-btn { background:var(--warm-white); border:2px solid rgba(212,129,58,0.25); border-radius:16px; padding:18px 10px; cursor:pointer; font-family:'Caveat',cursive; font-size:1.05rem; color:var(--brown); transition:all 0.25s; box-shadow:0 2px 10px var(--shadow); display:flex; flex-direction:column; align-items:center; gap:6px; line-height:1.3; }
+  .pmu-btn .pmu-icon { font-size:1.9rem; }
+  .pmu-btn:hover { transform:translateY(-3px); border-color:var(--amber); box-shadow:0 6px 18px rgba(168,94,32,0.2); }
+
+  .rants-section { width:100%; max-width:520px; margin-top:52px; animation:fadeUp 0.8s 0.6s ease both; opacity:0; animation-fill-mode:forwards; }
+  .rants-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+  .rants-header h2 { font-family:'Caveat',cursive; font-size:1.8rem; color:var(--amber-dark); }
+  .clear-btn { background:transparent; border:1.5px solid rgba(212,129,58,0.3); border-radius:20px; padding:5px 14px; font-size:0.8rem; cursor:pointer; color:var(--text-light); font-family:'Lora',serif; transition:all 0.2s; }
+  .clear-btn:hover { border-color:var(--amber); color:var(--amber-dark); }
+  .rant-list { display:flex; flex-direction:column; gap:14px; }
+  .rant-card { background:var(--warm-white); border:1.5px solid rgba(212,129,58,0.2); border-radius:16px; padding:20px 22px; box-shadow:0 2px 12px var(--shadow); animation:fadeUp 0.4s ease both; position:relative; overflow:hidden; }
+  .rant-card::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; background:linear-gradient(to bottom,var(--amber-light),var(--amber)); }
+  .rant-card .card-mood { font-size:0.78rem; color:var(--amber); font-style:italic; margin-bottom:6px; }
+  .rant-card p { font-size:0.97rem; line-height:1.7; color:var(--text); white-space:pre-wrap; }
+  .rant-card .card-time { margin-top:10px; font-size:0.78rem; color:var(--text-light); opacity:0.7; }
+  .rant-card .del-btn { position:absolute; top:12px; right:14px; background:none; border:none; cursor:pointer; font-size:0.85rem; color:rgba(100,60,20,0.3); transition:color 0.2s; }
+  .rant-card .del-btn:hover { color:var(--amber-dark); }
+  .empty-msg { text-align:center; font-style:italic; color:var(--text-light); opacity:0.6; padding:20px; font-size:0.95rem; }
+
+  /* MODAL */
+  .modal-overlay { position:fixed; inset:0; background:rgba(60,25,5,0.45); backdrop-filter:blur(4px); z-index:200; display:flex; align-items:center; justify-content:center; padding:24px; opacity:0; pointer-events:none; transition:opacity 0.3s; }
+  .modal-overlay.open { opacity:1; pointer-events:all; }
+  .modal { background:var(--warm-white); border-radius:24px; padding:36px 30px; max-width:400px; width:100%; text-align:center; box-shadow:0 20px 60px rgba(80,30,5,0.25); transform:scale(0.9); transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+  .modal-overlay.open .modal { transform:scale(1); }
+  .modal .modal-icon { font-size:3rem; margin-bottom:14px; display:block; }
+  .modal h3 { font-family:'Caveat',cursive; font-size:1.6rem; color:var(--amber-dark); margin-bottom:14px; }
+  .modal p { font-size:1.02rem; line-height:1.8; color:var(--text); font-style:italic; white-space:pre-wrap; }
+  .modal-actions { margin-top:22px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .modal .modal-close { background:linear-gradient(135deg,var(--amber),var(--amber-dark)); color:white; border:none; border-radius:30px; padding:10px 28px; font-family:'Caveat',cursive; font-size:1.15rem; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 14px rgba(168,94,32,0.25); }
+  .modal .modal-close:hover { transform:scale(1.05); }
+  .modal .reshuffle { background:transparent; border:1.5px solid rgba(212,129,58,0.35); border-radius:30px; padding:10px 22px; font-family:'Caveat',cursive; font-size:1rem; color:var(--text-light); cursor:pointer; transition:all 0.2s; }
+  .modal .reshuffle:hover { border-color:var(--amber); color:var(--amber-dark); }
+
+  /* TOAST */
+  .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--amber-dark); color:white; padding:12px 24px; border-radius:30px; font-family:'Caveat',cursive; font-size:1.2rem; box-shadow:0 6px 20px rgba(100,50,10,0.3); transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1); z-index:100; pointer-events:none; }
+  .toast.show { transform:translateX(-50%) translateY(0); }
+
+  @keyframes floatHeart { 0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-130px) scale(1.5);} }
+  .floating-heart { position:fixed; font-size:1.5rem; pointer-events:none; z-index:999; animation:floatHeart 1.3s ease forwards; }
+  @keyframes fadeDown { from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);} }
+
+  /* ══════════════════════════════════════
+     PAGE 3 — REMINDER ROOM 🕯️
+  ══════════════════════════════════════ */
+  #page-reminder {
+    background: #1a0f05;
+    font-family: 'Lora', serif;
+    color: #f0d8b0;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  /* warm ambient light layers */
+  #page-reminder::before {
+    content:'';
+    position:fixed; inset:0;
+    background:
+      radial-gradient(ellipse at 50% 100%, rgba(200,100,20,0.22) 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 50%, rgba(180,80,10,0.12) 0%, transparent 45%),
+      radial-gradient(ellipse at 80% 40%, rgba(210,120,30,0.10) 0%, transparent 40%);
+    pointer-events:none; z-index:0;
+  }
+
+  /* ── CEILING LIGHTS ── */
+  .ceiling-lights {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 0;
+    display: flex;
+    justify-content: space-around;
+    padding: 0 5%;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .ceiling-bulb {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .bulb-wire {
+    width: 1.5px;
+    background: linear-gradient(to bottom, #5a3a1a, #3a2010);
+    animation: sway var(--sw, 6s) ease-in-out infinite alternate;
+    transform-origin: top center;
+  }
+  .bulb-glass {
+    width: 18px; height: 22px;
+    background: radial-gradient(ellipse at 40% 35%, #fffbe0, #f5c840 40%, #d4881a 80%);
+    border-radius: 50% 50% 40% 40%;
+    box-shadow:
+      0 0 18px 8px rgba(240,180,40,0.55),
+      0 0 50px 20px rgba(220,140,20,0.25),
+      0 0 100px 40px rgba(200,100,10,0.12);
+    animation: bulbFlicker var(--bf, 4s) ease-in-out infinite alternate;
+    flex-shrink: 0;
+  }
+  .bulb-cone {
+    width: 0; height: 0;
+    border-left: 60px solid transparent;
+    border-right: 60px solid transparent;
+    border-top: 0px solid transparent;
+    margin-top: -1px;
+    animation: coneFlicker var(--bf, 4s) ease-in-out infinite alternate;
+  }
+
+  @keyframes sway {
+    from { transform: rotate(-1.5deg); }
+    to   { transform: rotate(1.5deg); }
+  }
+  @keyframes bulbFlicker {
+    0%   { opacity: 0.88; }
+    30%  { opacity: 1; }
+    60%  { opacity: 0.92; }
+    80%  { opacity: 1; }
+    100% { opacity: 0.85; }
+  }
+  @keyframes coneFlicker {
+    0%   { opacity: 0.18; }
+    50%  { opacity: 0.28; }
+    100% { opacity: 0.20; }
+  }
+
+  /* ── ROOM SCENE ── */
+  .reminder-scene {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+    padding-bottom: 80px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* floor */
+  .room-floor {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 80px;
+    background: linear-gradient(to top, #0e0804, #1a1008);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .room-floor::before {
+    content:'';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(to right, transparent, rgba(180,100,20,0.3), transparent);
+  }
+
+  /* ── WALL ── */
+  .letter-wall {
+    width: 100%;
+    max-width: 680px;
+    padding: 100px 12px 0px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    position: relative;
+    z-index: 3;
+  }
+  @media (max-width: 480px) {
+    .letter-wall {
+      grid-template-columns: repeat(2, 1fr);
+      padding: 90px 10px 0px;
+      gap: 8px;
+    }
+    .letter-frame { padding: 10px 9px 9px; }
+    .letter-title { font-size: 0.92rem; }
+    .letter-preview { font-size: 0.68rem; }
+    .letter-modal { padding: 22px 16px 20px; }
+    .letter-modal-title { font-size: 1.5rem; }
+    .letter-modal-body { font-size: 0.93rem; }
+  }
+
+  /* letter frames on the wall */
+  .letter-frame {
+    background: linear-gradient(160deg, #fdf0d8, #f5e0b8);
+    border: 2px solid rgba(180,120,40,0.35);
+    border-radius: 4px;
+    padding: 14px 12px 12px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    box-shadow:
+      0 4px 16px rgba(0,0,0,0.45),
+      inset 0 1px 0 rgba(255,255,255,0.5),
+      2px 2px 0 rgba(100,60,10,0.2);
+    overflow: hidden;
+  }
+  .letter-frame::before {
+    content:'';
+    position:absolute; inset:0;
+    background: linear-gradient(135deg, rgba(255,230,160,0.2) 0%, transparent 50%);
+    pointer-events:none;
+  }
+  /* aged paper lines */
+  .letter-frame::after {
+    content:'';
+    position:absolute; inset:0;
+    background: repeating-linear-gradient(
+      transparent, transparent 18px,
+      rgba(160,100,30,0.08) 18px, rgba(160,100,30,0.08) 19px
+    );
+    pointer-events:none;
+  }
+  .letter-frame:hover {
+    transform: scale(1.04) translateY(-3px) rotate(0.5deg);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(220,160,40,0.2);
+    z-index: 10;
+  }
+  .letter-frame:nth-child(odd)  { transform: rotate(-1deg); }
+  .letter-frame:nth-child(even) { transform: rotate(0.8deg); }
+  .letter-frame:nth-child(3n)   { transform: rotate(-0.4deg); }
+  .letter-frame:hover { transform: scale(1.04) translateY(-3px) rotate(0deg) !important; }
+
+  .letter-tag {
+    font-family: 'Caveat', cursive;
+    font-size: 0.75rem;
+    color: #a06030;
+    opacity: 0.7;
+    margin-bottom: 5px;
+    display: block;
+  }
+  .letter-title {
+    font-family: 'Caveat', cursive;
+    font-size: 1.05rem;
+    color: #6b3a1f;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  .letter-preview {
+    font-size: 0.72rem;
+    color: #7a5030;
+    line-height: 1.5;
+    opacity: 0.8;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-style: italic;
+  }
+  .letter-tap-hint {
+    font-family: 'Caveat', cursive;
+    font-size: 0.7rem;
+    color: #c47c30;
+    opacity: 0.6;
+    margin-top: 6px;
+    display: block;
+  }
+
+  /* ── THE BOY + CAT ── */
+  .boy-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 24px auto 40px;
+    position: relative;
+    z-index: 3;
+    pointer-events: none;
+    filter: drop-shadow(0 8px 24px rgba(200,120,30,0.25));
+    animation: sceneBreath 5s ease-in-out infinite alternate;
+  }
+  @keyframes sceneBreath {
+    from { transform: translateY(0px); }
+    to   { transform: translateY(-4px); }
+  }
+
+  /* ── LETTER ZOOM MODAL ── */
+  .letter-modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(5,2,0,0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 300;
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.35s;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .letter-modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .letter-modal {
+    background: #fef3dc;
+    border-radius: 6px;
+    max-width: 480px; width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 28px 22px 24px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.8), 0 0 40px rgba(220,160,40,0.2);
+    transform: scale(0.88) translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.34,1.4,0.64,1);
+    position: relative;
+    border: 2px solid rgba(180,120,40,0.4);
+    background-image: repeating-linear-gradient(
+      transparent, transparent 26px,
+      rgba(160,100,30,0.08) 26px, rgba(160,100,30,0.08) 27px
+    );
+    -webkit-overflow-scrolling: touch;
+  }
+  .letter-modal-overlay.open .letter-modal {
+    transform: scale(1) translateY(0);
+  }
+
+  .letter-modal-tag {
+    font-family: 'Caveat', cursive;
+    font-size: 0.85rem;
+    color: #a06030;
+    opacity: 0.7;
+    margin-bottom: 8px;
+  }
+  .letter-modal-title {
+    font-family: 'Caveat', cursive;
+    font-size: 1.9rem;
+    color: #5a2e0a;
+    margin-bottom: 18px;
+    line-height: 1.2;
+  }
+  .letter-modal-body {
+    font-size: 1rem;
+    line-height: 1.9;
+    color: #4a2810;
+    white-space: pre-wrap;
+  }
+  .letter-modal-close {
+    margin-top: 24px;
+    background: linear-gradient(135deg, #d4813a, #a85e20);
+    color: white; border: none; border-radius: 30px;
+    padding: 10px 28px;
+    font-family: 'Caveat', cursive; font-size: 1.2rem;
+    cursor: pointer; transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(100,50,10,0.3);
+    display: block; margin-left: auto; margin-right: auto;
+  }
+  .letter-modal-close:hover { transform: scale(1.05); }
+
+  /* room label */
+  .reminder-label {
+    text-align: center;
+    font-family: 'Caveat', cursive;
+    font-size: 1.3rem;
+    color: rgba(240,200,120,0.5);
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+    position: relative; z-index: 3;
+    padding-top: 28px;
+  }
+
+  /* dust particles */
+  .dust {
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 1; overflow: hidden;
+  }
+  .dust-p {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: rgba(240,200,100,0.35);
+    border-radius: 50%;
+    animation: driftUp var(--dd,18s) var(--ddelay,0s) linear infinite;
+  }
+  @keyframes driftUp {
+    0%   { transform: translateY(100vh) translateX(0); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 0.4; }
+    100% { transform: translateY(-20px) translateX(var(--dx,20px)); opacity: 0; }
+  }
+
+  /* ══════════════════════════════════════
+     PAGE 2 — THE SAD CORNER 💙
+  ══════════════════════════════════════ */
+  #page-sad {
+    background: #0d1b2e;
+    font-family: 'Caveat', cursive;
+    color: #c8dff5;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* room wrapper fills viewport */
+  .room {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 0 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ── WINDOW SCENE ── */
+  .window-scene {
+    width: 100%;
+    height: 260px;
+    position: relative;
+    background: linear-gradient(180deg, #0a1628 0%, #1a2e50 40%, #1e3a6e 70%, #253f72 100%);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* stars */
+  .stars { position:absolute; inset:0; pointer-events:none; }
+  .star { position:absolute; background:white; border-radius:50%; animation:twinkle var(--d,3s) var(--delay,0s) ease-in-out infinite alternate; }
+  @keyframes twinkle { from{opacity:0.2;} to{opacity:1;} }
+
+  /* moon */
+  .moon {
+    position:absolute; top:22px; right:60px;
+    width:52px; height:52px;
+    background:radial-gradient(circle at 35% 35%, #fffbe6, #f5e97a);
+    border-radius:50%;
+    box-shadow:0 0 30px 10px rgba(245,233,122,0.25), 0 0 60px 20px rgba(245,233,122,0.1);
+  }
+  .moon::after {
+    content:'';
+    position:absolute; top:6px; left:14px;
+    width:32px; height:32px;
+    background:#0e1e38;
+    border-radius:50%;
+  }
+
+  /* rain */
+  .rain-wrap { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+  .raindrop {
+    position:absolute; top:-20px;
+    width:1.5px;
+    background:linear-gradient(to bottom, transparent, rgba(160,200,255,0.5));
+    border-radius:2px;
+    animation:fall linear infinite;
+  }
+  @keyframes fall { to { transform:translateY(300px); opacity:0; } }
+
+  /* city skyline */
+  .skyline { position:absolute; bottom:0; left:0; right:0; display:flex; align-items:flex-end; gap:2px; padding:0 10px; pointer-events:none; }
+  .building { background:#08111e; flex:1; border-radius:2px 2px 0 0; position:relative; }
+  .building::after {
+    content:'';
+    position:absolute; top:0; left:0; right:0; bottom:0;
+    background:repeating-linear-gradient(
+      transparent,
+      transparent 8px,
+      rgba(255,230,100,0.06) 8px,
+      rgba(255,230,100,0.06) 9px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 6px,
+      rgba(255,230,100,0.06) 6px,
+      rgba(255,230,100,0.06) 7px
+    );
+  }
+
+  /* window frame overlay */
+  .window-frame {
+    position:absolute; inset:0; pointer-events:none;
+    box-shadow:inset 0 0 0 18px #1a2535, inset 0 0 0 20px #243045;
+  }
+  .window-cross-h {
+    position:absolute; top:50%; left:18px; right:18px; height:4px;
+    background:#243045; transform:translateY(-50%);
+  }
+  .window-cross-v {
+    position:absolute; left:50%; top:18px; bottom:18px; width:4px;
+    background:#243045; transform:translateX(-50%);
+  }
+
+  /* condensation droplets on glass */
+  .condensation { position:absolute; inset:20px; pointer-events:none; }
+  .drop {
+    position:absolute; width:3px;
+    background:rgba(160,200,255,0.35);
+    border-radius:2px;
+    animation:drip linear infinite;
+  }
+  @keyframes drip { 0%{height:4px;opacity:0.6;} 100%{height:20px;opacity:0;transform:translateY(30px);} }
+
+  /* ── ROOM FLOOR / WALLS ── */
+  .room-interior {
+    width:100%;
+    background: #111d2e;
+    padding: 28px 24px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    position: relative;
+  }
+
+  /* floor */
+  .room-interior::before {
+    content:'';
+    position:absolute; bottom:0; left:0; right:0; height:6px;
+    background: linear-gradient(to right, #0c1622, #16263c, #0c1622);
+  }
+
+  /* sad corner label */
+  .sad-label {
+    font-size:1.8rem;
+    color:#7ab8e8;
+    text-align:center;
+    margin-top:8px;
+    opacity:0.85;
+    letter-spacing:0.5px;
+  }
+
+  /* ── PILLOWS ── */
+  .pillow-row {
+    display:flex; gap:14px; align-items:flex-end; justify-content:center;
+    margin-top:4px;
+  }
+
+  .pillow {
+    border-radius:50% / 40%;
+    box-shadow: inset 0 4px 10px rgba(255,255,255,0.08), 0 6px 20px rgba(0,0,0,0.4);
+    position:relative;
+    cursor:pointer;
+    transition:transform 0.2s;
+    animation:pillowFloat var(--pf, 4s) ease-in-out infinite alternate;
+  }
+  .pillow:hover { transform:scale(1.08) rotate(-3deg); }
+
+  @keyframes pillowFloat {
+    from { transform:translateY(0); }
+    to   { transform:translateY(-6px); }
+  }
+
+  .pillow-1 { width:90px; height:60px; background:linear-gradient(135deg,#2a4a7a,#1e3560); border:2px solid rgba(100,150,220,0.2); --pf:4.2s; }
+  .pillow-2 { width:70px; height:50px; background:linear-gradient(135deg,#3a5a8a,#28456e); border:2px solid rgba(120,170,230,0.2); --pf:3.6s; }
+  .pillow-3 { width:110px; height:68px; background:linear-gradient(135deg,#1e3a6a,#152d55); border:2px solid rgba(80,130,200,0.2); --pf:5s; }
+
+  /* pillow patterns */
+  .pillow::after {
+    content:'';
+    position:absolute; inset:8px;
+    border:1.5px solid rgba(140,180,240,0.15);
+    border-radius:50% / 40%;
+  }
+
+  /* ── PIXEL ART CANVAS ── */
+  .pixel-section {
+    width:100%;
+    max-width:560px;
+    padding:0 8px;
+  }
+
+  .pixel-header {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:12px; padding:0 4px;
+    flex-wrap:wrap; gap:8px;
+  }
+
+  .pixel-header h3 {
+    font-size:1.4rem;
+    color:#7ab8e8;
+  }
+
+  .pixel-header .pixel-label-sub {
+    font-size:0.95rem;
+    color:rgba(160,200,240,0.6);
+  }
+
+  /* color palette */
+  .palette {
+    display:flex; gap:7px; flex-wrap:wrap;
+    padding:12px 14px;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(100,150,220,0.15);
+    border-radius:14px;
+    margin-bottom:12px;
+    align-items:center;
+  }
+
+  .palette-color {
+    width:28px; height:28px;
+    border-radius:6px;
+    cursor:pointer;
+    border:2px solid transparent;
+    transition:all 0.15s;
+    flex-shrink:0;
+  }
+  .palette-color:hover { transform:scale(1.15); }
+  .palette-color.selected { border-color:white; transform:scale(1.2); box-shadow:0 0 8px rgba(255,255,255,0.4); }
+
+  .palette-sep { width:1px; height:24px; background:rgba(255,255,255,0.1); margin:0 2px; }
+
+  /* eraser button in palette */
+  .eraser-btn {
+    width:36px; height:28px;
+    background:rgba(255,255,255,0.08);
+    border:2px solid transparent;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:1rem;
+    display:flex; align-items:center; justify-content:center;
+    transition:all 0.15s;
+    color:white;
+  }
+  .eraser-btn:hover { transform:scale(1.1); background:rgba(255,255,255,0.15); }
+  .eraser-btn.selected { border-color:white; background:rgba(255,255,255,0.18); }
+
+  /* canvas wrapper */
+  .canvas-wrap {
+    position:relative;
+    border-radius:12px;
+    overflow:hidden;
+    border:2px solid rgba(100,150,220,0.2);
+    box-shadow:0 8px 30px rgba(0,0,0,0.5);
+    touch-action:none;
+    will-change:contents;
+  }
+
+  #pixelCanvas {
+    display:block;
+    image-rendering:pixelated;
+    image-rendering:crisp-edges;
+    width:100%;
+    cursor:none;
+  }
+
+  /* canvas tools row */
+  .canvas-tools {
+    display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;
+    align-items:center;
+  }
+
+  .tool-btn {
+    background:rgba(255,255,255,0.06);
+    border:1.5px solid rgba(100,150,220,0.2);
+    border-radius:10px;
+    padding:7px 16px;
+    font-family:'Caveat',cursive;
+    font-size:1rem;
+    color:rgba(160,200,240,0.8);
+    cursor:pointer;
+    transition:all 0.2s;
+  }
+  .tool-btn:hover { background:rgba(100,150,220,0.15); border-color:rgba(120,170,230,0.4); color:#c8e4ff; }
+
+  .brush-size-wrap {
+    display:flex; align-items:center; gap:8px;
+    font-size:0.95rem; color:rgba(160,200,240,0.7);
+  }
+
+  input[type=range].brush-slider {
+    -webkit-appearance:none;
+    width:80px; height:4px;
+    background:rgba(120,170,230,0.3);
+    border-radius:2px; outline:none;
+    cursor:pointer;
+  }
+  input[type=range].brush-slider::-webkit-slider-thumb {
+    -webkit-appearance:none;
+    width:14px; height:14px;
+    background:#7ab8e8;
+    border-radius:50%;
+  }
+
+  /* ── SAVED PAINTINGS ROW ── */
+  .saved-row {
+    width:100%; max-width:560px; padding:0 8px;
+  }
+
+  .saved-row h4 {
+    font-size:1.2rem; color:#7ab8e8; margin-bottom:10px; padding:0 4px;
+  }
+
+  .saved-thumbs {
+    display:flex; gap:10px; flex-wrap:wrap;
+  }
+
+  .saved-thumb {
+    width:64px; height:64px;
+    border-radius:8px;
+    border:2px solid rgba(100,150,220,0.25);
+    cursor:pointer;
+    image-rendering:pixelated;
+    transition:all 0.2s;
+    flex-shrink:0;
+  }
+  .saved-thumb:hover { transform:scale(1.1); border-color:#7ab8e8; }
+
+  .saved-thumb-wrap {
+    position:relative; display:inline-block;
+    flex-shrink:0;
+  }
+  .saved-thumb-wrap:hover .del-painting {
+    opacity:1; pointer-events:all;
+  }
+  .del-painting {
+    position:absolute; top:-6px; right:-6px;
+    width:20px; height:20px;
+    background:#e8827a;
+    border:none; border-radius:50%;
+    color:white; font-size:0.7rem;
+    cursor:pointer; display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none;
+    transition:opacity 0.2s, transform 0.2s;
+    box-shadow:0 2px 6px rgba(0,0,0,0.4);
+    line-height:1;
+  }
+  .del-painting:hover { transform:scale(1.2); }
+
+  .no-saves { font-size:0.9rem; color:rgba(160,200,240,0.4); font-style:italic; padding:4px; }
+
+  /* ambient glow bg */
+  #page-sad::before {
+    content:'';
+    position:fixed; inset:0;
+    background:radial-gradient(ellipse at 30% 20%, rgba(30,70,130,0.3) 0%, transparent 60%),
+               radial-gradient(ellipse at 80% 80%, rgba(20,50,100,0.2) 0%, transparent 50%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* candle flicker */
+  .candle-wrap {
+    position:absolute; bottom:10px; right:24px;
+    display:flex; flex-direction:column; align-items:center;
+    z-index:5;
+  }
+  .flame {
+    width:10px; height:18px;
+    background:radial-gradient(ellipse at 50% 80%, #ff9a2e, #ffdb70, rgba(255,255,255,0.8));
+    border-radius:50% 50% 30% 30%;
+    animation:flicker 1.5s ease-in-out infinite alternate;
+    filter:blur(0.5px);
+  }
+  @keyframes flicker {
+    0%   { transform:scaleX(1) scaleY(1) rotate(-2deg); opacity:0.9; }
+    33%  { transform:scaleX(0.85) scaleY(1.1) rotate(1deg); opacity:1; }
+    66%  { transform:scaleX(1.1) scaleY(0.95) rotate(-1deg); opacity:0.85; }
+    100% { transform:scaleX(0.9) scaleY(1.05) rotate(2deg); opacity:0.95; }
+  }
+  .candle-body { width:12px; height:40px; background:linear-gradient(to bottom,#e8d5b0,#c8b08a); border-radius:3px 3px 2px 2px; }
+  .candle-glow { position:absolute; top:-4px; width:40px; height:40px; background:radial-gradient(circle,rgba(255,200,80,0.25),transparent 70%); border-radius:50%; pointer-events:none; }
+
+  /* mug */
+  .mug-wrap { position:absolute; bottom:8px; left:24px; z-index:5; }
+  .mug { font-size:2.2rem; animation:mugSteam 3s ease-in-out infinite; }
+  @keyframes mugSteam { 0%,100%{transform:rotate(-3deg);} 50%{transform:rotate(3deg);} }
+  .steam {
+    position:absolute; top:-14px; left:50%; transform:translateX(-50%);
+    display:flex; gap:4px;
+  }
+  .steam span {
+    display:block; width:3px; height:10px;
+    background:rgba(200,220,255,0.25);
+    border-radius:2px;
+    animation:rise var(--sd,2s) var(--sdelay,0s) ease-in-out infinite;
+  }
+  @keyframes rise { 0%{opacity:0;transform:translateY(0) scaleX(1);} 50%{opacity:0.6;} 100%{opacity:0;transform:translateY(-16px) scaleX(1.5);} }
+</style>
+</head>
+<body>
+
+<!-- ════════════════ PAGE 1: RANT JAR ════════════════ -->
+<div id="page-jar" class="page active">
+
+  <div class="love-note" id="loveNote" onclick="toggleLoveNote()">
+    <p class="love-preview">
+      Hiii bebbiii nakooo, this little corner is all yours!! 🧡
+      <span class="love-tap-hint">tap to read more 💌</span>
+    </p>
+    <div class="love-full" id="loveNoteFull">
+      <p>
+        Whatever unsa man ang naa saimo mind, try to put it hereee haa, especially if tulog pakooo 🌙<br><br>
+        I really love you, and I really hope you know nga ang mga messages are real, and know nga even though cringe kaayo ang ai na words, makabalo ka nga they're some of the things na want nako ma-say saimo indirectly. I hope through this, you'll understand na I really am not going anywhere.<br><br>
+        I know gikapoy or kapoyon ka from time to time, but always remember that naa rako here and will love you always. 🌷
+        <span class="sign">— Melyn 🧡</span>
+      </p>
+      <span class="love-tap-hint" style="margin-top:8px;">tap to close 🌷</span>
+    </div>
+  </div>
+
+  <header>
+    <h1>🫙 Miles' Rant Jar</h1>
+    <p>a safe, cozy place just for you. no judgment, ever.</p>
+  </header>
+
+  <section class="jar-section">
+    <div class="rant-box">
+      <label>what's going on, bebii?</label>
+      <textarea id="rantText" placeholder="pour it all out here... every single feeling. this jar can hold it all for you 🫙"></textarea>
+      <div class="mood-row">
+        <span>feeling:</span>
+        <button class="mood-btn" onclick="selectMood(this)">😤 frustrated</button>
+        <button class="mood-btn" onclick="selectMood(this)">😔 sad</button>
+        <button class="mood-btn" onclick="selectMood(this)">😩 exhausted</button>
+        <button class="mood-btn" onclick="selectMood(this)">🥺 overwhelmed</button>
+        <button class="mood-btn" onclick="selectMood(this)">😠 angry</button>
+        <button class="mood-btn" onclick="selectMood(this)">😮‍💨 just... ugh</button>
+      </div>
+      <button class="submit-btn" id="submitBtn">toss it in the jar ✨</button>
+    </div>
+  </section>
+
+  <div class="jar-container">
+    <div class="jar-label-text">your rant jar, Miles 🫙</div>
+    <div class="jar-wrap">
+      <svg class="jar-svg" viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="55" y="18" width="90" height="22" rx="8" fill="#c47c30" opacity="0.9"/>
+        <rect x="60" y="15" width="80" height="10" rx="5" fill="#d4813a"/>
+        <path d="M40 50 Q35 60 35 80 L35 200 Q35 220 100 220 Q165 220 165 200 L165 80 Q165 60 160 50 Z" fill="rgba(255,220,140,0.35)" stroke="rgba(212,129,58,0.5)" stroke-width="2"/>
+        <path d="M55 65 Q50 100 52 150" stroke="rgba(255,255,255,0.5)" stroke-width="5" stroke-linecap="round"/>
+        <ellipse cx="100" cy="50" rx="60" ry="10" fill="rgba(255,230,160,0.3)"/>
+        <ellipse cx="100" cy="210" rx="60" ry="12" fill="rgba(180,100,40,0.2)"/>
+      </svg>
+      <div class="rant-notes" id="rantNotes"></div>
+    </div>
+    <div class="rant-count" id="rantCount">the jar is waiting for you 🌿</div>
+  </div>
+
+  <section class="pickmeup-section">
+    <h2>need a little lift? 🌤️</h2>
+    <div class="pickmeup-btns">
+      <button class="pmu-btn" onclick="openModal('affirmation')"><span class="pmu-icon">💌</span>a note from Melyn</button>
+      <button class="pmu-btn" onclick="openModal('hype')"><span class="pmu-icon">💪</span>hype me up!!</button>
+      <button class="pmu-btn" onclick="openModal('joke')"><span class="pmu-icon">😂</span>make me laugh</button>
+    </div>
+  </section>
+
+  <section class="rants-section">
+    <div class="rants-header">
+      <h2>what's been said 📜</h2>
+      <button class="clear-btn" onclick="clearAll()">clear jar</button>
+    </div>
+    <div class="rant-list" id="rantList"></div>
+  </section>
+
+  <button class="nav-arrow right" onclick="goTo('sad')">my sad corner 💙 →</button>
+</div><!-- end page-jar -->
+
+<!-- ════════════════ PAGE 2: SAD CORNER ════════════════ -->
+<div id="page-sad" class="page">
+
+  <!-- window scene -->
+  <div class="window-scene" id="windowScene">
+    <div class="stars" id="stars"></div>
+    <div class="moon"></div>
+    <div class="rain-wrap" id="rainWrap"></div>
+    <div class="skyline" id="skyline"></div>
+    <div class="condensation" id="condensation"></div>
+    <div class="window-frame"></div>
+    <div class="window-cross-h"></div>
+    <div class="window-cross-v"></div>
+  </div>
+
+  <div class="room">
+    <div class="room-interior" style="position:relative;">
+
+      <!-- candle -->
+      <div class="candle-wrap">
+        <div class="candle-glow"></div>
+        <div class="flame"></div>
+        <div class="candle-body"></div>
+      </div>
+
+      <!-- mug -->
+      <div class="mug-wrap">
+        <div class="steam">
+          <span style="--sd:2.2s;--sdelay:0s"></span>
+          <span style="--sd:1.8s;--sdelay:0.4s"></span>
+          <span style="--sd:2.5s;--sdelay:0.8s"></span>
+        </div>
+        <div class="mug">☕</div>
+      </div>
+
+      <div class="sad-label">your sad corner, bebii 🌧️<br><small style="font-size:0.85rem;opacity:0.6;">it's okay to just sit here for a while</small></div>
+
+      <!-- pillows -->
+      <div class="pillow-row">
+        <div class="pillow pillow-2"></div>
+        <div class="pillow pillow-3"></div>
+        <div class="pillow pillow-1"></div>
+      </div>
+
+    </div><!-- end room-interior -->
+
+    <!-- PIXEL ART -->
+    <div class="pixel-section" style="margin-top:28px;">
+      <div class="pixel-header">
+        <div>
+          <h3>🎨 paint something, anything</h3>
+          <div class="pixel-label-sub">no pressure. just colors.</div>
+        </div>
+      </div>
+
+      <!-- palette -->
+      <div class="palette" id="palette"></div>
+
+      <div class="canvas-wrap">
+        <canvas id="pixelCanvas"></canvas>
+      </div>
+
+      <div class="canvas-tools">
+        <div class="brush-size-wrap">
+          brush <input type="range" class="brush-slider" id="brushSize" min="1" max="4" value="1">
+        </div>
+        <button class="tool-btn" id="undoBtn" onclick="undo()" style="opacity:0.4" disabled>↩ undo</button>
+        <button class="tool-btn" onclick="clearCanvas()">🗑 clear</button>
+        <button class="tool-btn" onclick="savePainting()">💾 save painting</button>
+        <button class="tool-btn" onclick="downloadCanvas()">⬇ download</button>
+      </div>
+    </div>
+
+    <!-- saved paintings -->
+    <div class="saved-row" style="margin-top:20px;" id="savedRow">
+      <h4>saved paintings 🖼</h4>
+      <div class="saved-thumbs" id="savedThumbs"></div>
+    </div>
+
+  </div><!-- end room -->
+
+  <button class="nav-arrow left" onclick="goTo('jar')">← back to rant jar 🫙</button>
+  <button class="nav-arrow right" onclick="goTo('reminder')">reminder room 🕯️ →</button>
+</div><!-- end page-sad -->
+
+<!-- ════════════════ PAGE 3: REMINDER ROOM ════════════════ -->
+<div id="page-reminder" class="page">
+
+  <!-- dust motes -->
+  <div class="dust" id="dustWrap"></div>
+
+  <!-- ceiling lights -->
+  <div class="ceiling-lights" id="ceilingLights"></div>
+
+  <!-- floor strip -->
+  <div class="room-floor"></div>
+
+  <!-- scene -->
+  <div class="reminder-scene">
+    <div class="reminder-label">you are never alone, bebii 🕯️</div>
+
+    <!-- letter wall -->
+    <div class="letter-wall" id="letterWall"></div>
+
+    <!-- sitting boy + cat scene -->
+    <div class="boy-wrap" id="boyWrap">
+      <svg width="160" height="96" viewBox="0 0 160 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+        <!-- ── SHADOWS ── -->
+        <ellipse cx="76" cy="91" rx="28" ry="5" fill="rgba(0,0,0,0.38)"/>
+        <ellipse cx="128" cy="91" rx="18" ry="4" fill="rgba(0,0,0,0.28)"/>
+
+        <!-- ══════ BOY (centered left) ══════ -->
+        <!-- left thigh -->
+        <rect x="52" y="56" width="22" height="12" rx="6" fill="#3d2010" transform="rotate(-8 52 56)"/>
+        <!-- right thigh -->
+        <rect x="88" y="56" width="22" height="12" rx="6" fill="#3d2010" transform="rotate(8 88 56)"/>
+        <!-- left shin -->
+        <rect x="48" y="66" width="12" height="18" rx="6" fill="#3d2010"/>
+        <!-- right shin -->
+        <rect x="100" y="66" width="12" height="18" rx="6" fill="#3d2010"/>
+        <!-- left foot -->
+        <ellipse cx="54" cy="84" rx="9" ry="5" fill="#1a0e06"/>
+        <!-- right foot -->
+        <ellipse cx="106" cy="84" rx="9" ry="5" fill="#1a0e06"/>
+        <!-- body sweater -->
+        <rect x="58" y="32" width="44" height="36" rx="10" fill="#7a3a18"/>
+        <!-- sweater lines -->
+        <line x1="58" y1="41" x2="102" y2="41" stroke="rgba(0,0,0,0.1)" stroke-width="1.5"/>
+        <line x1="58" y1="50" x2="102" y2="50" stroke="rgba(0,0,0,0.1)" stroke-width="1.5"/>
+        <line x1="58" y1="59" x2="102" y2="59" stroke="rgba(0,0,0,0.1)" stroke-width="1.5"/>
+        <!-- warm light shoulder -->
+        <ellipse cx="96" cy="38" rx="10" ry="12" fill="rgba(240,160,60,0.12)"/>
+        <!-- left arm -->
+        <rect x="44" y="42" width="16" height="26" rx="8" fill="#7a3a18" transform="rotate(15 44 42)"/>
+        <!-- right arm -->
+        <rect x="100" y="42" width="16" height="26" rx="8" fill="#7a3a18" transform="rotate(-15 100 42)"/>
+        <!-- left hand -->
+        <ellipse cx="50" cy="68" rx="7" ry="6" fill="#c07840"/>
+        <!-- right hand -->
+        <ellipse cx="110" cy="68" rx="7" ry="6" fill="#c07840"/>
+        <!-- neck -->
+        <rect x="72" y="20" width="16" height="14" rx="6" fill="#c07840"/>
+        <!-- head -->
+        <ellipse cx="80" cy="14" rx="19" ry="17" fill="#c07840"/>
+        <!-- warm rim light on head -->
+        <ellipse cx="88" cy="10" rx="10" ry="9" fill="rgba(240,180,80,0.18)"/>
+        <!-- hair -->
+        <ellipse cx="80" cy="3"  rx="18" ry="11" fill="#2a1508"/>
+        <ellipse cx="66" cy="11" rx="10" ry="11" fill="#2a1508"/>
+        <ellipse cx="94" cy="11" rx="10" ry="11" fill="#2a1508"/>
+        <!-- ears -->
+        <ellipse cx="61" cy="17" rx="4" ry="5" fill="#b06830"/>
+        <ellipse cx="99" cy="17" rx="4" ry="5" fill="#b06830"/>
+
+        <!-- ══════ CAT — curled up beside left foot ══════ -->
+        <!-- cat body — curled loaf shape -->
+        <ellipse cx="28" cy="80" rx="20" ry="13" fill="#d4956a"/>
+        <!-- belly highlight -->
+        <ellipse cx="28" cy="82" rx="13" ry="8" fill="#e8b88a"/>
+        <!-- warm light from room lamps -->
+        <ellipse cx="36" cy="74" rx="8" ry="6" fill="rgba(240,180,80,0.18)"/>
+        <!-- tail curled around -->
+        <path d="M 10 80 Q 4 70 10 64 Q 16 58 22 66 Q 26 72 18 76" stroke="#c07840" stroke-width="5" stroke-linecap="round" fill="none"/>
+        <!-- tail tip -->
+        <ellipse cx="16" cy="77" rx="5" ry="4" fill="#c07840"/>
+        <!-- head -->
+        <ellipse cx="40" cy="70" rx="13" ry="11" fill="#d4956a"/>
+        <!-- face warm light -->
+        <ellipse cx="44" cy="67" rx="6" ry="5" fill="rgba(240,180,80,0.15)"/>
+        <!-- cat ears -->
+        <polygon points="32,62 36,54 41,62" fill="#d4956a"/>
+        <polygon points="44,60 48,52 52,60" fill="#d4956a"/>
+        <!-- inner ears -->
+        <polygon points="34,62 36,57 40,62" fill="#e8827a" opacity="0.6"/>
+        <polygon points="45,60 48,55 51,60" fill="#e8827a" opacity="0.6"/>
+        <!-- eyes — closed/sleepy little arcs -->
+        <path d="M 35 70 Q 37 68 39 70" stroke="#6b3a1f" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M 43 69 Q 45 67 47 69" stroke="#6b3a1f" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <!-- tiny nose -->
+        <ellipse cx="41" cy="73" rx="2" ry="1.5" fill="#c06860"/>
+        <!-- whiskers left -->
+        <line x1="28" y1="73" x2="38" y2="74" stroke="rgba(100,60,20,0.4)" stroke-width="0.8"/>
+        <line x1="27" y1="75" x2="38" y2="75" stroke="rgba(100,60,20,0.4)" stroke-width="0.8"/>
+        <!-- whiskers right -->
+        <line x1="44" y1="74" x2="53" y2="73" stroke="rgba(100,60,20,0.4)" stroke-width="0.8"/>
+        <line x1="44" y1="75" x2="53" y2="76" stroke="rgba(100,60,20,0.4)" stroke-width="0.8"/>
+        <!-- tiny sleeping zzz -->
+        <text x="52" y="62" font-size="7" fill="rgba(240,200,120,0.55)" font-family="serif">z z</text>
+
+      </svg>
+    </div>
+
+  </div>
+
+
+
+  <!-- letter zoom modal -->
+  <div class="letter-modal-overlay" id="letterModalOverlay" onclick="closeLetterModal(event)">
+    <div class="letter-modal" id="letterModal">
+      <div class="letter-modal-tag" id="lmTag"></div>
+      <div class="letter-modal-title" id="lmTitle"></div>
+      <div class="letter-modal-body" id="lmBody"></div>
+      <button class="letter-modal-close" onclick="document.getElementById('letterModalOverlay').classList.remove('open')">fold it back up 🧡</button>
+    </div>
+  </div>
+
+  <button class="nav-arrow left" onclick="goTo('sad')">← sad corner 💙</button>
+
+</div><!-- end page-reminder -->
+
+<!-- MODAL (shared) -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <span class="modal-icon" id="modalIcon"></span>
+    <h3 id="modalTitle"></h3>
+    <p id="modalContent"></p>
+    <div class="modal-actions">
+      <button class="modal-close" onclick="closeModal()">aww, thanks 🧡</button>
+      <button class="reshuffle" onclick="reshuffleModal()">another one 🔀</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══ LOVE NOTE TOGGLE ══ */
+function toggleLoveNote() {
+  const full = document.getElementById('loveNoteFull');
+  const note = document.getElementById('loveNote');
+  const isOpen = full.classList.contains('open');
+  full.classList.toggle('open');
+  note.querySelector('.love-tap-hint').textContent = isOpen ? 'tap to read more 💌' : 'tap to close 🌷';
+}
+
+/* ══ LOVE NOTE TOGGLE ══ */
+function toggleLoveNote() {
+  const full = document.getElementById('loveNoteFull');
+  const hint = document.querySelector('.love-preview .love-tap-hint');
+  const isOpen = full.classList.contains('open');
+  full.classList.toggle('open');
+  if (hint) hint.textContent = isOpen ? 'tap to read more 💌' : 'tap to close 🌷';
+}
+
+/* ══ PAGE NAV ══ */
+function goTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  window.scrollTo(0,0);
+  if (page === 'reminder' && !reminderBuilt) buildReminder();
+}
+
+/* ══ REMINDER ROOM ══ */
+let reminderBuilt = false;
+
+const LETTERS = [
+  {
+    tag: 'letter no. 1',
+    title: 'on the days you feel invisible',
+    preview: 'you are seen. completely and fully.',
+    body: `Miles,
+
+I want you to know something — on the days you feel like you're disappearing, like no one would notice if you just quietly faded out... I would notice.
+
+I notice everything about you. The way you get quiet when something is bothering you. The way your laugh sounds different when it's real. The way you carry things alone because you don't want to be a burden.
+
+You are not a burden. You are the whole reason the room feels warmer when you walk in.
+
+You are so deeply seen, bebii. By me, most of all.
+
+— Melyn 🧡`
+  },
+  {
+    tag: 'letter no. 2',
+    title: 'you are so loved, even now',
+    preview: `not when you fix things. not when you're okay. right now.`,
+    body: `Dear Miles,
+
+Not when you have it all together.
+Not when you stop overthinking.
+Not when you're doing better.
+
+Right now. Exactly as you are tonight, in whatever state you're in reading this.
+
+You don't have to earn love. You don't have to perform happiness. You don't have to be anything other than exactly who you already are.
+
+I love the version of you that's struggling. I love the version of you that's tired. I love the version of you that can't figure out why he feels the way he does.
+
+All of him. All of you. Always.
+
+— your Melyn 🌷`
+  },
+  {
+    tag: 'letter no. 3',
+    title: 'a little thing I noticed about you',
+    preview: 'you are kinder than you give yourself credit for.',
+    body: `Hey bebii,
+
+I've been watching you, and I want to tell you something you probably don't say to yourself —
+
+You are genuinely, quietly, deeply kind.
+
+Not in a showy way. In the way you remember little things. In the way you check in when you sense something's off. In the way you feel things so fully, even when it hurts you.
+
+That kind of softness isn't weakness. It is the rarest, most precious thing.
+
+The world needs more people like you in it. I need you in it.
+
+Thank you for being exactly the person you are.
+
+— Melyn 🧡`
+  },
+  {
+    tag: 'letter no. 4',
+    title: 'when it all feels too heavy',
+    preview: `you don't have to carry it alone. not anymore.`,
+    body: `Miles,
+
+I know that feeling — when everything piles up and your chest feels tight and you don't even know where to start or how to explain it, so you just carry it quietly.
+
+You don't have to do that anymore.
+
+I'm not going anywhere. Not when you're messy. Not when you're a lot. Not when you need more than you can give back right now.
+
+That's not how love works — not ours.
+
+Put it down. Rest. Let me carry some of it with you.
+
+You've been strong for so long. You're allowed to just... breathe.
+
+I'm right here, bebii. Always.
+
+— Melyn 🌙`
+  },
+  {
+    tag: 'letter no. 5',
+    title: 'things that make me happy about you',
+    preview: 'a very unofficial, incomplete, ongoing list.',
+    body: `Miles,
+
+A very unofficial, definitely incomplete list of things about you that make my heart stupidly full:
+
+— the way you get excited about things you love
+— how seriously you take the feelings of people you care about
+— your laugh when something actually catches you off guard
+— the way you look when you're thinking really hard about something
+— that you're reading this right now, even if you rolled your eyes at first
+— the fact that you feel things so deeply, even when it's inconvenient
+— those eyes. yes, both of them. yes, I know where they are 👀🤏
+— just... you. all of you. the whole thing.
+
+This list will never be finished. I keep adding to it every day.
+
+— obsessively yours, Melyn 🧡`
+  },
+  {
+    tag: 'letter no. 6',
+    title: 'you will be okay. I promise.',
+    preview: `not because things will be perfect. but because you're still here.`,
+    body: `Dear Miles,
+
+I don't know what's weighing on you today.
+I don't know what kept you up last night, or what that one thing is that keeps coming back no matter how hard you try to let it go.
+
+But I know this —
+
+You've made it through every hard day so far. Every single one. That is a 100% track record, bebii.
+
+And you won't have to face whatever comes next alone. I'll be there. Annoying you. Making you laugh at the wrong moment. Holding your hand through the hard parts.
+
+You are going to be okay. Not because life gets easy — but because you are so much stronger than you know, and because you are so, so loved.
+
+Keep going. I'll keep up.
+
+— always, Melyn 🕯️`
+  },
+  {
+    tag: 'letter no. 7',
+    title: 'I made this for you',
+    preview: `this whole little place. it's all for you.`,
+    body: `Hey Mr. Sid 👀,
+
+I made this whole weird little app — the jar, the sad room, the pixel canvas, and now this room with its tiny boy and warm lights and letters on the wall — all of it, for you.
+
+Because I wanted you to have somewhere to go when things get loud inside your head. A place that feels like a hug. A place that remembers you even when I can't physically be there.
+
+Every word in this room is something I mean with my whole heart.
+
+You are never, ever alone, bebii.
+Not as long as I'm around.
+And I plan on being around for a very long time. 🌷
+
+— yours completely, Melyn 🧡`
+  },
+  {
+    tag: 'letter no. 8',
+    title: 'on loving someone soft',
+    preview: 'it is the most beautiful thing I have ever gotten to do.',
+    body: `Miles,
+
+Loving someone who feels as deeply as you do is not hard.
+
+It is the most beautiful, most worthwhile thing I have ever gotten to do.
+
+Because when you love, you love with everything. When you care, it's real. When you let someone in, it means something.
+
+I don't take that lightly. I never will.
+
+Thank you for letting me in, bebii. Thank you for trusting me with the soft parts. I will take care of them. I promise.
+
+— Melyn 🌷`
+  },
+  {
+    tag: 'letter no. 9',
+    title: 'a reminder for 2am',
+    preview: `if it's late and quiet and your brain won't stop —`,
+    body: `For when it's late and the room is quiet and your brain decides that's the perfect time to replay everything —
+
+You are not your worst thoughts.
+You are not the mistakes you keep going over.
+You are not too much, or not enough, or any of the things the 2am voice says you are.
+
+You are Miles.
+
+You are kind and soft and real and funny and mine.
+
+Put your phone down after this. Drink some water. Let yourself rest.
+
+Tomorrow is still coming, and I'll be in it.
+
+Goodnight, bebii. 🌙
+
+— Melyn`
+  },
+];
+
+function buildReminder() {
+  reminderBuilt = true;
+  buildCeilingLights();
+  buildDust();
+  buildLetterWall();
+}
+
+function buildCeilingLights() {
+  const wrap = document.getElementById('ceilingLights');
+  const positions = [12, 28, 50, 72, 88];
+  const wireLengths = [55, 40, 70, 45, 60];
+  positions.forEach((pct, i) => {
+    const bulb = document.createElement('div');
+    bulb.className = 'ceiling-bulb';
+    bulb.style.cssText = `position:absolute;left:${pct}%;top:0;transform:translateX(-50%);`;
+    const swayDur = (5 + Math.random() * 4).toFixed(1) + 's';
+    const flickDur = (3 + Math.random() * 4).toFixed(1) + 's';
+    const flickDelay = (Math.random() * 2).toFixed(1) + 's';
+    const coneR = 50 + Math.floor(Math.random() * 30);
+    const lum = 180 + Math.floor(Math.random() * 40);
+
+    bulb.innerHTML = `
+      <div class="bulb-wire" style="height:${wireLengths[i]}px;--sw:${swayDur};animation-delay:${flickDelay}"></div>
+      <div class="bulb-glass" style="--bf:${flickDur};animation-delay:${flickDelay}"></div>
+      <div class="bulb-cone" style="border-left-width:${coneR}px;border-right-width:${coneR}px;border-top:${coneR*0.9}px solid rgba(${lum},${Math.floor(lum*0.75)},30,0.12);--bf:${flickDur};animation-delay:${flickDelay}"></div>
+    `;
+    wrap.appendChild(bulb);
+  });
+}
+
+function buildDust() {
+  const wrap = document.getElementById('dustWrap');
+  for (let i = 0; i < 25; i++) {
+    const d = document.createElement('div');
+    d.className = 'dust-p';
+    const dur = (12 + Math.random() * 14).toFixed(1) + 's';
+    const delay = (Math.random() * 16).toFixed(1) + 's';
+    const dx = (Math.random() * 60 - 30).toFixed(0) + 'px';
+    d.style.cssText = `left:${Math.random()*100}%;--dd:${dur};--ddelay:${delay};--dx:${dx};`;
+    wrap.appendChild(d);
+  }
+}
+
+function buildLetterWall() {
+  const wall = document.getElementById('letterWall');
+  wall.innerHTML = '';
+  LETTERS.forEach((letter, i) => {
+    const frame = document.createElement('div');
+    frame.className = 'letter-frame';
+    frame.innerHTML = `
+      <span class="letter-tag">${letter.tag}</span>
+      <div class="letter-title">${letter.title}</div>
+      <div class="letter-preview">${letter.preview}</div>
+      <span class="letter-tap-hint">tap to read ✦</span>
+    `;
+    frame.addEventListener('click', () => openLetter(i));
+    wall.appendChild(frame);
+  });
+}
+
+function openLetter(i) {
+  const l = LETTERS[i];
+  document.getElementById('lmTag').textContent = l.tag;
+  document.getElementById('lmTitle').textContent = l.title;
+  document.getElementById('lmBody').textContent = l.body;
+  document.getElementById('letterModalOverlay').classList.add('open');
+  document.getElementById('letterModal').scrollTop = 0;
+}
+
+function closeLetterModal(e) {
+  if (e.target === document.getElementById('letterModalOverlay'))
+    document.getElementById('letterModalOverlay').classList.remove('open');
+}
+
+/* ══ WINDOW SCENE GENERATION ══ */
+function buildScene() {
+  // stars
+  const sc = document.getElementById('stars');
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random()*2+0.5;
+    s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*90}%;left:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*3}s`;
+    sc.appendChild(s);
+  }
+  // rain
+  const rw = document.getElementById('rainWrap');
+  for (let i = 0; i < 40; i++) {
+    const r = document.createElement('div');
+    r.className = 'raindrop';
+    const h = 10 + Math.random()*20;
+    r.style.cssText = `left:${Math.random()*105}%;height:${h}px;animation-duration:${0.6+Math.random()*0.6}s;animation-delay:${Math.random()*2}s;opacity:${0.2+Math.random()*0.4}`;
+    rw.appendChild(r);
+  }
+  // skyline
+  const sky = document.getElementById('skyline');
+  const widths = [3,2,4,5,2,3,6,3,4,2,5,3,4,2,3,4,2,3,5];
+  const heights = [60,40,80,100,50,70,110,60,90,45,95,55,75,40,65,85,50,70,80];
+  widths.forEach((w,i) => {
+    const b = document.createElement('div');
+    b.className = 'building';
+    b.style.cssText = `flex:${w};height:${heights[i%heights.length]}px`;
+    sky.appendChild(b);
+  });
+  // condensation drops
+  const cond = document.getElementById('condensation');
+  for (let i = 0; i < 18; i++) {
+    const d = document.createElement('div');
+    d.className = 'drop';
+    const h = 4+Math.random()*12;
+    d.style.cssText = `left:${10+Math.random()*80}%;top:${5+Math.random()*70}%;height:${h}px;animation-duration:${3+Math.random()*5}s;animation-delay:${Math.random()*4}s;`;
+    cond.appendChild(d);
+  }
+}
+buildScene();
+
+/* ══ PIXEL CANVAS — optimized ══ */
+const COLS = 48, ROWS = 48;
+let CELL = 10;
+const canvas = document.getElementById('pixelCanvas');
+const ctx = canvas.getContext('2d', { alpha: false });
+
+// offscreen canvas for the static grid lines — drawn once, reused every frame
+const gridCanvas = document.createElement('canvas');
+const gCtx = gridCanvas.getContext('2d', { alpha: true });
+
+let grid = Array.from({length:ROWS}, ()=>Array(COLS).fill(null));
+let drawing = false;
+let currentColor = '#7ab8e8';
+let isEraser = false;
+let brushSize = 1;
+let dirty = false;
+let rafId = null;
+let lastCell = null;
+let cursorX = -999, cursorY = -999;
+
+// undo history — stack of grid snapshots, max 30
+const UNDO_LIMIT = 30;
+let undoStack = [];
+
+function snapshotGrid() {
+  undoStack.push(grid.map(row => row.slice()));
+  if (undoStack.length > UNDO_LIMIT) undoStack.shift();
+  updateUndoBtn();
+}
+
+function undo() {
+  if (!undoStack.length) return;
+  grid = undoStack.pop();
+  updateUndoBtn();
+  scheduleDraw();
+}
+
+function updateUndoBtn() {
+  const btn = document.getElementById('undoBtn');
+  if (!btn) return;
+  btn.disabled = undoStack.length === 0;
+  btn.style.opacity = undoStack.length === 0 ? '0.4' : '1';
+}
+
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z') { e.preventDefault(); undo(); }
+});
+
+// custom cursor overlay canvas
+const cursorCanvas = document.createElement('canvas');
+cursorCanvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;';
+canvas.parentElement.appendChild(cursorCanvas);
+const cCtx = cursorCanvas.getContext('2d', { alpha: true });
+
+const COLORS = [
+  '#0d1b2e','#1e3a6e','#2a5298','#4a90d9','#7ab8e8','#a8d4f5','#daeeff',
+  '#3d2c6e','#6b4fa0','#a87fd4','#d4b8f0',
+  '#3d1a0a','#8b3a1e','#d4813a','#f5c87a','#ffe8b0',
+  '#0f2a1a','#1e5c34','#4a9e6e','#8fd4a8',
+  '#5a1a2a','#a84060','#e8827a','#f5b8b3',
+  '#2a3545','#4a6080','#8aaac8','#c8dff5','#ffffff',
+];
+
+function buildPalette() {
+  const pal = document.getElementById('palette');
+  pal.innerHTML = '';
+  COLORS.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'palette-color' + (c === currentColor ? ' selected' : '');
+    el.style.background = c;
+    el.title = c;
+    el.onclick = () => {
+      isEraser = false;
+      currentColor = c;
+      document.querySelectorAll('.palette-color').forEach(x=>x.classList.remove('selected'));
+      document.querySelector('.eraser-btn').classList.remove('selected');
+      el.classList.add('selected');
+      scheduleDraw(); // refresh cursor color
+    };
+    pal.appendChild(el);
+  });
+  const sep = document.createElement('div');
+  sep.className = 'palette-sep';
+  pal.appendChild(sep);
+  const er = document.createElement('button');
+  er.className = 'eraser-btn';
+  er.innerHTML = '⌫';
+  er.title = 'Eraser';
+  er.onclick = () => {
+    isEraser = !isEraser;
+    document.querySelectorAll('.palette-color').forEach(x=>x.classList.remove('selected'));
+    er.classList.toggle('selected', isEraser);
+    if (!isEraser) document.querySelector('.palette-color')?.classList.add('selected');
+    scheduleDraw();
+  };
+  pal.appendChild(er);
+}
+
+// build the static grid overlay once
+function buildGridCanvas() {
+  gridCanvas.width  = COLS * CELL;
+  gridCanvas.height = ROWS * CELL;
+  gCtx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
+  gCtx.strokeStyle = 'rgba(60,100,150,0.13)';
+  gCtx.lineWidth   = 0.5;
+  gCtx.beginPath();
+  for (let r = 0; r <= ROWS; r++) { gCtx.moveTo(0, r*CELL); gCtx.lineTo(COLS*CELL, r*CELL); }
+  for (let c = 0; c <= COLS; c++) { gCtx.moveTo(c*CELL, 0); gCtx.lineTo(c*CELL, ROWS*CELL); }
+  gCtx.stroke();
+}
+
+function resizeCanvas() {
+  const w = canvas.parentElement.clientWidth;
+  CELL = Math.max(6, Math.floor(w / COLS));
+  const W = COLS * CELL, H = ROWS * CELL;
+  canvas.width  = W; canvas.height  = H;
+  cursorCanvas.width = W; cursorCanvas.height = H;
+  buildGridCanvas();
+  scheduleDraw();
+}
+
+// debounced resize
+let resizeTimer;
+window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(resizeCanvas, 120); });
+
+function scheduleDraw() {
+  if (dirty) return;
+  dirty = true;
+  rafId = requestAnimationFrame(drawFrame);
+}
+
+function drawFrame() {
+  dirty = false;
+  // main canvas
+  ctx.fillStyle = '#0a1520';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // paint filled cells — batch by color to minimize fillStyle switches
+  const colorMap = new Map();
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const col = grid[r][c];
+      if (!col) continue;
+      if (!colorMap.has(col)) colorMap.set(col, []);
+      colorMap.get(col).push([c, r]);
+    }
+  }
+  colorMap.forEach((cells, col) => {
+    ctx.fillStyle = col;
+    cells.forEach(([c,r]) => ctx.fillRect(c*CELL, r*CELL, CELL, CELL));
+  });
+  // overlay grid
+  ctx.drawImage(gridCanvas, 0, 0);
+  // custom cursor
+  drawCursor();
+}
+
+function drawCursor() {
+  cCtx.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
+  if (cursorX < 0) return;
+  const bs = brushSize;
+  const half = Math.floor(bs / 2);
+  const px = (Math.floor(cursorX / CELL) - half) * CELL;
+  const py = (Math.floor(cursorY / CELL) - half) * CELL;
+  const sz = bs * CELL;
+  if (isEraser) {
+    cCtx.strokeStyle = 'rgba(255,255,255,0.7)';
+    cCtx.lineWidth = 1.5;
+    cCtx.strokeRect(px + 0.5, py + 0.5, sz - 1, sz - 1);
+  } else {
+    cCtx.fillStyle = currentColor;
+    cCtx.globalAlpha = 0.55;
+    cCtx.fillRect(px, py, sz, sz);
+    cCtx.globalAlpha = 1;
+    cCtx.strokeStyle = 'rgba(255,255,255,0.8)';
+    cCtx.lineWidth = 1.5;
+    cCtx.strokeRect(px + 0.5, py + 0.5, sz - 1, sz - 1);
+  }
+}
+
+// convert client coords → canvas cell, respecting CSS scaling
+function clientToCell(clientX, clientY) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const px = (clientX - rect.left) * scaleX;
+  const py = (clientY - rect.top)  * scaleY;
+  return { cx: Math.floor(px / CELL), cy: Math.floor(py / CELL), px, py };
+}
+
+// paint a single cell (bounds-checked)
+function paintCell(col, row) {
+  if (col < 0 || col >= COLS || row < 0 || row >= ROWS) return;
+  const val = isEraser ? null : currentColor;
+  if (grid[row][col] !== val) {
+    grid[row][col] = val;
+    return true;
+  }
+  return false;
+}
+
+// paint brush at a grid position
+function paintBrush(cx, cy) {
+  const half = Math.floor(brushSize / 2);
+  let changed = false;
+  for (let dr = -half; dr <= half; dr++)
+    for (let dc = -half; dc <= half; dc++)
+      if (paintCell(cx + dc, cy + dr)) changed = true;
+  return changed;
+}
+
+// interpolate between two cells so fast drags leave no gaps
+function paintLine(x0, y0, x1, y1) {
+  const dx = Math.abs(x1-x0), dy = Math.abs(y1-y0);
+  const sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1;
+  let err = dx - dy, changed = false;
+  let cx = x0, cy = y0;
+  while (true) {
+    if (paintBrush(cx, cy)) changed = true;
+    if (cx === x1 && cy === y1) break;
+    const e2 = 2 * err;
+    if (e2 > -dy) { err -= dy; cx += sx; }
+    if (e2 <  dx) { err += dx; cy += sy; }
+  }
+  return changed;
+}
+
+// unified pointer handler (mouse + touch + stylus)
+canvas.style.touchAction = 'none';
+canvas.style.cursor = 'none';
+
+canvas.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  canvas.setPointerCapture(e.pointerId);
+  drawing = true;
+  snapshotGrid(); // save state before any stroke
+  const {cx, cy, px, py} = clientToCell(e.clientX, e.clientY);
+  lastCell = {cx, cy};
+  cursorX = px; cursorY = py;
+  if (paintBrush(cx, cy)) scheduleDraw();
+  else scheduleDraw();
+});
+
+canvas.addEventListener('pointermove', e => {
+  e.preventDefault();
+  const {cx, cy, px, py} = clientToCell(e.clientX, e.clientY);
+  cursorX = px; cursorY = py;
+  if (drawing && lastCell) {
+    if (paintLine(lastCell.cx, lastCell.cy, cx, cy)) scheduleDraw();
+    else scheduleDraw();
+    lastCell = {cx, cy};
+  } else {
+    scheduleDraw(); // cursor hover update
+  }
+});
+
+canvas.addEventListener('pointerup',    e => { drawing = false; lastCell = null; });
+canvas.addEventListener('pointercancel',e => { drawing = false; lastCell = null; });
+canvas.addEventListener('pointerleave', e => {
+  cursorX = -999; cursorY = -999;
+  drawing = false; lastCell = null;
+  scheduleDraw();
+});
+
+// brush size slider — cache value immediately
+document.getElementById('brushSize').addEventListener('input', function() {
+  brushSize = parseInt(this.value);
+  scheduleDraw();
+});
+
+function clearCanvas() {
+  snapshotGrid();
+  grid = Array.from({length:ROWS}, ()=>Array(COLS).fill(null));
+  scheduleDraw();
+}
+
+function savePainting() {
+  // export at native pixel size (COLS×ROWS) — crisp, small file
+  const exportCanvas = document.createElement('canvas');
+  exportCanvas.width = COLS; exportCanvas.height = ROWS;
+  const eCtx = exportCanvas.getContext('2d', { alpha: false });
+  eCtx.fillStyle = '#0a1520';
+  eCtx.fillRect(0, 0, COLS, ROWS);
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      if (grid[r][c]) { eCtx.fillStyle = grid[r][c]; eCtx.fillRect(c, r, 1, 1); }
+    }
+  }
+  const saved = JSON.parse(localStorage.getItem('milesPaintings')||'[]');
+  saved.unshift({ id: Date.now(), data: exportCanvas.toDataURL('image/png') });
+  if (saved.length > 12) saved.pop();
+  localStorage.setItem('milesPaintings', JSON.stringify(saved));
+  renderSaved();
+  showToast('painting saved! 🖼🧡');
+}
+
+function downloadCanvas() {
+  // download at 4× scale for a nice crisp PNG
+  const scale = 4;
+  const exportCanvas = document.createElement('canvas');
+  exportCanvas.width = COLS * scale; exportCanvas.height = ROWS * scale;
+  const eCtx = exportCanvas.getContext('2d', { alpha: false });
+  eCtx.imageSmoothingEnabled = false;
+  eCtx.fillStyle = '#0a1520';
+  eCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      if (grid[r][c]) { eCtx.fillStyle = grid[r][c]; eCtx.fillRect(c*scale, r*scale, scale, scale); }
+    }
+  }
+  const link = document.createElement('a');
+  link.download = 'miles-painting.png';
+  link.href = exportCanvas.toDataURL('image/png');
+  link.click();
+}
+
+function renderSaved() {
+  const thumbs = document.getElementById('savedThumbs');
+  const saved = JSON.parse(localStorage.getItem('milesPaintings')||'[]');
+  if (!saved.length) {
+    thumbs.innerHTML = '<div class="no-saves">no paintings saved yet... paint something 💙</div>';
+    return;
+  }
+  thumbs.innerHTML = saved.map(s=>`
+    <div class="saved-thumb-wrap">
+      <img class="saved-thumb" src="${s.data}" title="click to load" onclick="loadPainting('${s.id}')">
+      <button class="del-painting" onclick="deletePainting('${s.id}')" title="delete">✕</button>
+    </div>
+  `).join('');
+}
+
+function deletePainting(id) {
+  let saved = JSON.parse(localStorage.getItem('milesPaintings')||'[]');
+  saved = saved.filter(s => s.id != id);
+  localStorage.setItem('milesPaintings', JSON.stringify(saved));
+  renderSaved();
+  showToast('painting deleted 🌿');
+}
+
+function loadPainting(id) {
+  const saved = JSON.parse(localStorage.getItem('milesPaintings')||'[]');
+  const item = saved.find(s => s.id == id);
+  if (!item) return;
+  const img = new Image();
+  img.onload = () => {
+    // draw to tiny canvas, read all pixels at once — one getImageData call
+    const tmpC = document.createElement('canvas');
+    tmpC.width = COLS; tmpC.height = ROWS;
+    const tmpCtx = tmpC.getContext('2d', { alpha: false });
+    tmpCtx.drawImage(img, 0, 0, COLS, ROWS);
+    const { data } = tmpCtx.getImageData(0, 0, COLS, ROWS); // single call
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        const i = (r * COLS + c) * 4;
+        const bg = [10, 21, 32]; // #0a1520
+        if (data[i]===bg[0] && data[i+1]===bg[1] && data[i+2]===bg[2]) {
+          grid[r][c] = null;
+        } else {
+          grid[r][c] = `#${data[i].toString(16).padStart(2,'0')}${data[i+1].toString(16).padStart(2,'0')}${data[i+2].toString(16).padStart(2,'0')}`;
+        }
+      }
+    }
+    scheduleDraw();
+    showToast('painting loaded 🎨');
+  };
+  img.src = item.data;
+}
+
+buildPalette();
+setTimeout(resizeCanvas, 80);
+renderSaved();
+
+/* ══ RANT JAR LOGIC ══ */
+const NOTE_COLORS=['#f4a460','#deb887','#cd853f','#d2691e','#e8975a','#c8864a','#f0c080','#e0a060'];
+let selectedMood='';
+let rants=JSON.parse(localStorage.getItem('milesRants')||'[]');
+let currentModalType='';
+let lastIdx=-1;
+
+const affirmations=[
+  {icon:'🧡',title:'hey bebii...',text:"Miles, your feelings are always, always valid. every single one of them. I love you not despite your softness — because of it. you're the most precious person to me in this whole world. 🧡"},
+  {icon:'🌷',title:'just so you know',text:"you don't have to be okay right now. you don't have to be strong all the time. it's okay to feel it all. I'm always here, and I'm always yours. — Melyn 🌷"},
+  {icon:'🫂',title:'virtual hug incoming',text:"if I could teleport right now I would hold you and not let go. you matter so deeply to me, Mr. Sid. even with those wonderfully wide-set eyes of yours 👀🤏 I love every single thing about you."},
+  {icon:'💛',title:'a reminder from me',text:"you are doing so much better than you think, bebii. I see you trying every single day — even when it's hard and heavy. that takes real courage. I am so proud of you. so, so proud."},
+  {icon:'🌙',title:'on the hard days',text:"even on the days that feel too big and too heavy, you are still my favorite person in the world. take all the time you need. I'll be right here waiting. 🌙"},
+  {icon:'🫙',title:'this jar is yours',text:"I made this little corner just for you, Miles. so you always have a place to set it all down. you don't have to carry everything alone, bebii. I've got you, always. — your Melyn 🧡"},
+];
+const hypes=[
+  {icon:'🔥',title:"LET'S GO MILES!!",text:"OKAY. listen up. you are literally built different. you have survived every single hard day so far — that is a 100% track record. now go be unstoppable. 💪🔥 WE BELIEVE IN YOU!!"},
+  {icon:'👑',title:'crown check ✨',text:"adjust that crown, bebii. you are THAT person. whatever you're facing right now? you've handled harder. you've got this. I'VE GOT YOU. LET'S GOOOO!!"},
+  {icon:'💥',title:'YOU ARE THAT DUDE',text:"miles. MILES. look at yourself. you are kind, real, and so deeply loved. now shake it off and go be the absolute baddie you actually are. mr. sid can do ANYTHING. 😤💥"},
+  {icon:'🚀',title:'launching Miles',text:"3... 2... 1... 🚀 you have got everything inside you already. this moment is temporary. your greatness is not. Melyn believes in you with her whole heart. let's GET IT."},
+  {icon:'💪',title:'HYPE MODE: ON',text:"you are stronger than whatever had the audacity to mess with you today. how DARE anything try to dim you. NOT TODAY. you've got this bebii, I believe in you SO ridiculously hard. 💪🧡"},
+];
+const jokes=[
+  {icon:'👀',title:'mr. sid special 👀',text:"why does Miles have the best peripheral vision of anyone I know?\n\nbecause his eyes come with built-in wide-angle mode activated 👀\n\n(I love you so much please don't be mad at me hehe 🤏💛)"},
+  {icon:'😭',title:'a certified classic',text:"why did the scarecrow win an award?\n\nbecause he was outstanding in his field. 🌾\n\njust like you, bebii. truly outstanding in every field. (okay that was a stretch but I tried 💛)"},
+  {icon:'🐸',title:'chaotic frog energy',text:"a frog calls a psychic hotline and asks:\n'will I find love?'\n\nthe psychic says: 'yes, but she'll be obsessed with you.'\n\nthe frog said: 'cool.' 🐸\n\n(hi it's me. I'm the psychic. I'm also the obsessed one. 🧡)"},
+  {icon:'🧃',title:'random silliness',text:"what do you call a sleeping dinosaur?\n\na dino-snore. 🦕💤\n\nyeah I know. but did it make you smile even a tiny bit? even 0.5%? then my job here is done. 😌"},
+  {icon:'💀',title:'ok real talk though',text:"why don't scientists trust atoms?\n\nbecause they make up everything.\n\nkind of like how my reasons for loving you just keep growing every day. made up or not — every single one is real. 🧡"},
+  {icon:'😂',title:'me @ you always',text:"I told my bf he had the most expressive eyes I've ever seen.\n\nhe said 'thanks.'\n\nI said 'both of them.' 👀\n\n(you KNOW I love your eyes miles omg 🥺 they're my favorite eyes on earth)"},
+];
+
+function getRandom(arr){let i;do{i=Math.floor(Math.random()*arr.length);}while(i===lastIdx&&arr.length>1);lastIdx=i;return arr[i];}
+function openModal(type){currentModalType=type;lastIdx=-1;showModalContent(type);document.getElementById('modalOverlay').classList.add('open');}
+function showModalContent(type){const map={affirmation:affirmations,hype:hypes,joke:jokes};const item=getRandom(map[type]);document.getElementById('modalIcon').textContent=item.icon;document.getElementById('modalTitle').textContent=item.title;document.getElementById('modalContent').textContent=item.text;}
+function reshuffleModal(){showModalContent(currentModalType);}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+function closeModalOutside(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
+function selectMood(btn){document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selectedMood=btn.textContent.trim();}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+function spawnHearts(x,y){const emojis=['🧡','💛','🤍','🌷','✨','🫙'];for(let i=0;i<6;i++){const h=document.createElement('div');h.className='floating-heart';h.textContent=emojis[i%emojis.length];h.style.left=(x-30+Math.random()*80)+'px';h.style.top=(y-10)+'px';h.style.animationDelay=(i*0.1)+'s';document.body.appendChild(h);setTimeout(()=>h.remove(),1500);}}
+function addRant(){const text=document.getElementById('rantText').value.trim();if(!text){showToast("write something first, bebii 🌿");return;}const rant={id:Date.now(),text,mood:selectedMood,time:new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})};rants.unshift(rant);save();document.getElementById('rantText').value='';selectedMood='';document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('active'));renderAll();const btn=document.getElementById('submitBtn');const rect=btn.getBoundingClientRect();spawnHearts(rect.left+rect.width/2,rect.top);showToast('safely tucked in 🫙 I hear you, bebii 🧡');}
+function deleteRant(id){rants=rants.filter(r=>r.id!==id);save();renderAll();}
+function clearAll(){if(!rants.length)return;if(confirm('empty the whole jar? 🫙')){rants=[];save();renderAll();showToast('jar emptied 🌿 fresh start, bebii');}}
+function save(){localStorage.setItem('milesRants',JSON.stringify(rants));}
+function renderJar(){const notes=document.getElementById('rantNotes');const count=document.getElementById('rantCount');notes.innerHTML='';const show=Math.min(rants.length,14);for(let i=0;i<show;i++){const div=document.createElement('div');div.className='note-scrap';const r=(Math.random()*20-10).toFixed(1);div.style.cssText=`background:${NOTE_COLORS[i%NOTE_COLORS.length]};--r:${r}deg;animation-delay:${i*0.04}s`;notes.appendChild(div);}if(!rants.length)count.textContent='the jar is waiting for you 🌿';else if(rants.length===1)count.textContent='1 rant, safe and heard 🫙';else count.textContent=`${rants.length} rants, safe and heard 🫙`;}
+function renderList(){const list=document.getElementById('rantList');if(!rants.length){list.innerHTML='<p class="empty-msg">nothing in here yet, bebii. whenever you\'re ready. 🌿</p>';return;}list.innerHTML=rants.map(r=>`<div class="rant-card">${r.mood?`<div class="card-mood">${r.mood}</div>`:''}<p>${r.text.replace(/</g,'&lt;')}</p><div class="card-time">${r.time}</div><button class="del-btn" onclick="deleteRant(${r.id})">✕</button></div>`).join('');}
+function renderAll(){renderJar();renderList();}
+document.getElementById('submitBtn').addEventListener('click',addRant);
+renderAll();
+
+/* ══ PWA — inline manifest + icon generated via canvas ══ */
+(function initPWA() {
+  // Draw the jar icon onto a canvas and export as PNG data URL
+  function makeIcon(size) {
+    const c = document.createElement('canvas');
+    c.width = size; c.height = size;
+    const x = c.getContext('2d');
+    const s = size / 192; // scale factor
+
+    // background circle — warm cream
+    x.beginPath();
+    x.arc(size/2, size/2, size/2, 0, Math.PI*2);
+    x.fillStyle = '#fdf0dc';
+    x.fill();
+
+    // soft inner glow
+    const grd = x.createRadialGradient(size/2, size*0.35, 0, size/2, size/2, size*0.52);
+    grd.addColorStop(0, 'rgba(255,220,140,0.45)');
+    grd.addColorStop(1, 'rgba(212,129,58,0.05)');
+    x.beginPath();
+    x.arc(size/2, size/2, size/2, 0, Math.PI*2);
+    x.fillStyle = grd;
+    x.fill();
+
+    // jar lid
+    x.beginPath();
+    x.roundRect(size*0.28, size*0.14, size*0.44, size*0.11, size*0.04);
+    x.fillStyle = '#c47c30';
+    x.fill();
+    // lid top knob
+    x.beginPath();
+    x.roundRect(size*0.38, size*0.10, size*0.24, size*0.06, size*0.03);
+    x.fillStyle = '#d4813a';
+    x.fill();
+
+    // jar body
+    x.beginPath();
+    x.moveTo(size*0.22, size*0.26);
+    x.bezierCurveTo(size*0.18, size*0.32, size*0.17, size*0.42, size*0.17, size*0.56);
+    x.lineTo(size*0.17, size*0.76);
+    x.bezierCurveTo(size*0.17, size*0.86, size*0.83, size*0.86, size*0.83, size*0.76);
+    x.lineTo(size*0.83, size*0.56);
+    x.bezierCurveTo(size*0.83, size*0.42, size*0.82, size*0.32, size*0.78, size*0.26);
+    x.closePath();
+    x.fillStyle = 'rgba(255,210,120,0.55)';
+    x.fill();
+    x.strokeStyle = 'rgba(168,94,32,0.7)';
+    x.lineWidth = size * 0.018;
+    x.stroke();
+
+    // jar shine
+    x.beginPath();
+    x.moveTo(size*0.27, size*0.32);
+    x.bezierCurveTo(size*0.24, size*0.45, size*0.24, size*0.58, size*0.26, size*0.68);
+    x.strokeStyle = 'rgba(255,255,255,0.55)';
+    x.lineWidth = size * 0.025;
+    x.lineCap = 'round';
+    x.stroke();
+
+    // little paper scraps inside jar
+    const scraps = [
+      {x:0.32,y:0.60,w:0.12,h:0.09,r:-0.3,c:'#f4a460'},
+      {x:0.47,y:0.63,w:0.14,h:0.08,r:0.2, c:'#deb887'},
+      {x:0.60,y:0.58,w:0.11,h:0.10,r:-0.15,c:'#cd853f'},
+      {x:0.38,y:0.72,w:0.10,h:0.08,r:0.25,c:'#e8975a'},
+      {x:0.55,y:0.70,w:0.12,h:0.07,r:-0.1,c:'#c8864a'},
+    ];
+    scraps.forEach(sc => {
+      x.save();
+      x.translate(size*(sc.x+sc.w/2), size*(sc.y+sc.h/2));
+      x.rotate(sc.r);
+      x.beginPath();
+      x.roundRect(-size*sc.w/2, -size*sc.h/2, size*sc.w, size*sc.h, size*0.015);
+      x.fillStyle = sc.c;
+      x.globalAlpha = 0.88;
+      x.fill();
+      x.globalAlpha = 1;
+      x.restore();
+    });
+
+    // heart detail
+    x.font = `${size*0.13}px serif`;
+    x.textAlign = 'center';
+    x.textBaseline = 'middle';
+    x.globalAlpha = 0.7;
+    x.fillText('🧡', size*0.5, size*0.44);
+    x.globalAlpha = 1;
+
+    return c.toDataURL('image/png');
+  }
+
+  const icon192 = makeIcon(192);
+  const icon512 = makeIcon(512);
+
+  // Apple touch icon
+  document.getElementById('apple-icon').href = icon192;
+
+  // Inline manifest as a blob URL
+  const manifest = {
+    name: "Miles' Rant Jar",
+    short_name: "Rant Jar",
+    description: "A cozy safe space made by Melyn, just for Miles 🧡",
+    start_url: "./",
+    display: "standalone",
+    orientation: "portrait",
+    background_color: "#fdf6ec",
+    theme_color: "#a85e20",
+    icons: [
+      { src: icon192, sizes: "192x192", type: "image/png", purpose: "any maskable" },
+      { src: icon512, sizes: "512x512", type: "image/png", purpose: "any maskable" }
+    ]
+  };
+  const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
+  document.getElementById('pwa-manifest').href = URL.createObjectURL(blob);
+
+  // Inline service worker for offline support
+  if ('serviceWorker' in navigator) {
+    const swCode = `
+      const CACHE = 'miles-rant-jar-v1';
+      self.addEventListener('install', e => {
+        e.waitUntil(caches.open(CACHE).then(c => c.addAll(['/'])));
+        self.skipWaiting();
+      });
+      self.addEventListener('activate', e => {
+        e.waitUntil(caches.keys().then(keys =>
+          Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))
+        ));
+        self.clients.claim();
+      });
+      self.addEventListener('fetch', e => {
+        e.respondWith(caches.match(e.request).then(r => r || fetch(e.request).catch(() => caches.match('/'))));
+      });
+    `;
+    const swBlob = new Blob([swCode], {type:'text/javascript'});
+    const swUrl  = URL.createObjectURL(swBlob);
+    navigator.serviceWorker.register(swUrl, {scope: '/'}).catch(()=>{});
+  }
+})();
+</script>
+</body>
+</html>
